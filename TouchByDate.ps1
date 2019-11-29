@@ -8,14 +8,14 @@
 # est-ce que ça va le corriger ? 
 
 # Dossier à cibler : 
-$Dossier = Read-Host "Quel répertoire ?"
+$Dossier = Read-Host "Quel dossier ?"
 if ($Dossier)
 {
     Set-Location $Dossier
 }
 else 
 {
-    Throw "T'as rien écrit bouffon"
+    Throw "Dossier non spécifié"
     #quit
 }
 
@@ -23,6 +23,8 @@ else
 $ListeFichiers = Get-ChildItem | Sort-Object -Property Name
 
 # Remettre les timecodes à plat : 
+Get-ChildItem $ListeFichiers | ForEach-Object -Process {Set-ItemProperty $_ -Name CreationTime -Value (Get-Date)}
+Get-ChildItem $ListeFichiers | ForEach-Object -Process {Set-ItemProperty $_ -Name LastAccessTime -Value (Get-Date)}
 Get-ChildItem $ListeFichiers | ForEach-Object -Process {Set-ItemProperty $_ -Name LastWriteTime -Value (Get-Date)}
 
 # Afficher le résultat :
